@@ -1,8 +1,10 @@
 import cv2
+
 from camera import Camera
 from detector import Detector
 from tracker import Tracker
-from state_engine import StateEngine   # REQUIRED
+from state_engine import StateEngine
+from zone_engine import ZoneEngine
 
 
 def main():
@@ -11,13 +13,23 @@ def main():
     camera = Camera()
     detector = Detector()
     tracker = Tracker()
-    state_engine = StateEngine()   # REQUIRED
+    state_engine = StateEngine()
 
     frame_count = 0
 
+    # Read first frame to initialize zone engine properly
+    ret, frame = camera.read()
+
+    if not ret:
+        print("Failed to read camera")
+        return
+
+    frame_height, frame_width, _ = frame.shape
+
+    zone_engine = ZoneEngine(frame_width, frame_height)
+
     while True:
 
-        # Read frame
         ret, frame = camera.read()
 
         if not ret:
@@ -28,17 +40,27 @@ def main():
         # Run detection every 6th frame (performance optimization)
         if frame_count % 6 == 0:
 
+            # Detect objects
             detections = detector.detect(frame)
 
-            # Update tracker
+            # Update tracker (persistent IDs)
             tracker.update(detections)
 
-            # Update state engine (behavior intelligence)
-            events = state_engine.update(tracker.objects)
+            # Behavioral intelligence
+            state_events = state_engine.update(tracker.objects)
 
-            # Print intelligence events
-            for event in events:
+            for event in state_events:
                 print(event)
+
+            # Restricted zone intelligence
+            zone_events = zone_engine.update(tracker.objects)
+
+            for event in zone_events:
+                print(event)
+
+
+        # Draw restricted zone
+        zone_engine.draw_zone(frame)
 
 
         # Draw tracked objects
@@ -68,12 +90,16 @@ def main():
             )
 
 
-        cv2.imshow("ANTON - Intelligence Layer", frame)
+        # Show Anton intelligence view
+        cv2.imshow("ANTON - Recon Intelligence System", frame)
 
+
+        # Exit key
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
 
+    # Cleanup
     camera.release()
 
 
