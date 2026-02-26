@@ -1,50 +1,66 @@
-from vision_agents.core.agent import Agent
-from vision_agents.core.edge.local import LocalEdge
+import cv2
+
+from vision_agents import Agent
+from vision_agents.processors import VideoProcessor
 
 from detector import Detector
 from tracker import Tracker
 from state_engine import StateEngine
 from zone_engine import ZoneEngine
 from watchlist_engine import WatchlistEngine
+from event_engine import EventEngine
+from threat_engine import ThreatEngine
 
-import cv2
 
-
-class AntonVisionProcessor:
+class AntonProcessor(VideoProcessor):
 
     def __init__(self):
+
+        super().__init__()
 
         self.detector = Detector()
         self.tracker = Tracker()
         self.state_engine = StateEngine()
+        self.watchlist_engine = WatchlistEngine()
+        self.event_engine = EventEngine()
+        self.threat_engine = ThreatEngine()
 
         self.zone_engine = None
-        self.watchlist_engine = WatchlistEngine()
-
-        self.initialized = False
-
-
-    def process(self, frame):
-
-        if not self.initialized:
-
-            h, w, _ = frame.shape
-            self.zone_engine = ZoneEngine(w, h)
-            self.initialized = True
+        self.frame_count = 0
+        self.threat_levels = {}
 
 
-        detections = self.detector.detect(frame)
+    def process_frame(self, frame):
 
-        self.tracker.update(detections)
+        if self.zone_engine is None:
 
-        events = []
+            height, width, _ = frame.shape
+            self.zone_engine = ZoneEngine(width, height)
 
-        events.extend(self.state_engine.update(self.tracker.objects))
-        events.extend(self.zone_engine.update(self.tracker.objects))
-        events.extend(self.watchlist_engine.update(self.tracker.objects))
 
-        for event in events:
-            print("[ANTON INTEL]", event)
+        self.frame_count += 1
+
+        if self.frame_count % 6 == 0:
+
+            detections = self.detector.detect(frame)
+
+            self.tracker.update(detections)
+
+            state_events = self.state_engine.update(self.tracker.objects)
+            zone_events = self.zone_engine.update(self.tracker.objects)
+            watchlist_events = self.watchlist_engine.update(self.tracker.objects)
+
+            all_events = []
+            all_events.extend(state_events)
+            all_events.extend(zone_events)
+            all_events.extend(watchlist_events)
+
+            self.event_engine.process_events(all_events)
+
+            self.threat_levels = self.threat_engine.update(
+                self.tracker.objects,
+                all_events
+            )
 
 
         self.zone_engine.draw_zone(frame)
@@ -52,18 +68,30 @@ class AntonVisionProcessor:
         for obj_id, data in self.tracker.objects.items():
 
             x1, y1, x2, y2 = map(int, data["bbox"])
-
             label = data["label"]
 
-            cv2.rectangle(frame, (x1,y1), (x2,y2), (0,255,0), 2)
+            threat = self.threat_levels.get(obj_id, "LOW")
+
+            display_text = f"{label} [{obj_id}] ({threat})"
+
+            if threat == "LOW":
+                color = (0, 255, 0)
+            elif threat == "MEDIUM":
+                color = (0, 255, 255)
+            elif threat == "HIGH":
+                color = (0, 165, 255)
+            else:
+                color = (0, 0, 255)
+
+            cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
 
             cv2.putText(
                 frame,
-                f"{label} [{obj_id}]",
-                (x1, y1-10),
+                display_text,
+                (x1, y1 - 10),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.5,
-                (0,255,0),
+                color,
                 2
             )
 
@@ -72,16 +100,16 @@ class AntonVisionProcessor:
 
 def main():
 
-    processor = AntonVisionProcessor()
+    processor = AntonProcessor()
 
     agent = Agent(
-        edge=LocalEdge(),
-        instructions="Anton Recon Intelligence Agent"
+        instructions="You are ANTON, a real-time reconnaissance intelligence agent.",
+        processors=[processor]
     )
 
-    print("Anton Vision Agent started")
+    print("ANTON Vision Agent started")
 
-    agent.run(processor.process)
+    agent.run()
 
 
 if __name__ == "__main__":
