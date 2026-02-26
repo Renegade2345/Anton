@@ -2,6 +2,7 @@ import cv2
 from camera import Camera
 from detector import Detector
 from tracker import Tracker
+from state_engine import StateEngine   # REQUIRED
 
 
 def main():
@@ -10,6 +11,7 @@ def main():
     camera = Camera()
     detector = Detector()
     tracker = Tracker()
+    state_engine = StateEngine()   # REQUIRED
 
     frame_count = 0
 
@@ -28,10 +30,18 @@ def main():
 
             detections = detector.detect(frame)
 
-            # Update tracker with detections
+            # Update tracker
             tracker.update(detections)
 
-        # Draw tracked objects (NOT raw detections)
+            # Update state engine (behavior intelligence)
+            events = state_engine.update(tracker.objects)
+
+            # Print intelligence events
+            for event in events:
+                print(event)
+
+
+        # Draw tracked objects
         for obj_id, data in tracker.objects.items():
 
             x1, y1, x2, y2 = map(int, data["bbox"])
@@ -39,7 +49,6 @@ def main():
 
             display_text = f"{label} [{obj_id}]"
 
-            # Draw bounding box
             cv2.rectangle(
                 frame,
                 (x1, y1),
@@ -48,7 +57,6 @@ def main():
                 2
             )
 
-            # Draw label + persistent ID
             cv2.putText(
                 frame,
                 display_text,
@@ -59,14 +67,13 @@ def main():
                 2
             )
 
-        # Show output
-        cv2.imshow("ANTON - Tracking Layer", frame)
 
-        # Exit key
+        cv2.imshow("ANTON - Intelligence Layer", frame)
+
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-    # Cleanup
+
     camera.release()
 
 
