@@ -1,40 +1,40 @@
 import math
 import uuid
+import time
 
 
 class Tracker:
 
     def __init__(self):
 
-        # Stores active tracked objects
         self.objects = {}
 
-        # Distance threshold to consider same object
-        self.distance_threshold = 50
+        self.distance_threshold = 80   # increased tolerance
+        self.max_disappeared_time = 1.5  # seconds
 
 
     def _calculate_center(self, bbox):
 
         x1, y1, x2, y2 = bbox
 
-        cx = (x1 + x2) / 2
-        cy = (y1 + y2) / 2
-
-        return (cx, cy)
+        return ((x1+x2)/2, (y1+y2)/2)
 
 
     def _calculate_distance(self, c1, c2):
 
         return math.sqrt(
-            (c1[0] - c2[0])**2 +
-            (c1[1] - c2[1])**2
+            (c1[0]-c2[0])**2 +
+            (c1[1]-c2[1])**2
         )
 
 
     def update(self, detections):
 
-        tracked = []
+        current_time = time.time()
 
+        matched_ids = set()
+
+        # Match detections to existing objects
         for detection in detections:
 
             bbox = detection["bbox"]
@@ -42,43 +42,47 @@ class Tracker:
 
             center = self._calculate_center(bbox)
 
-            matched_id = None
+            best_match = None
+            best_distance = float("inf")
 
-            # Try matching existing objects
             for obj_id, obj in self.objects.items():
 
                 if obj["label"] != label:
                     continue
 
-                dist = self._calculate_distance(
-                    center,
-                    obj["center"]
-                )
+                distance = self._calculate_distance(center, obj["center"])
 
-                if dist < self.distance_threshold:
+                if distance < self.distance_threshold and distance < best_distance:
 
-                    matched_id = obj_id
-                    break
+                    best_match = obj_id
+                    best_distance = distance
 
 
-            # If no match, create new object
-            if matched_id is None:
+            if best_match is None:
 
-                matched_id = str(uuid.uuid4())[:8]
+                best_match = str(uuid.uuid4())[:8]
 
 
-            # Update object state
-            self.objects[matched_id] = {
+            self.objects[best_match] = {
                 "label": label,
                 "bbox": bbox,
-                "center": center
+                "center": center,
+                "last_seen": current_time
             }
 
-            tracked.append({
-                "id": matched_id,
-                "label": label,
-                "bbox": bbox
-            })
+            matched_ids.add(best_match)
 
 
-        return tracked
+        # Remove stale objects
+        to_delete = []
+
+        for obj_id, obj in self.objects.items():
+
+            if current_time - obj["last_seen"] > self.max_disappeared_time:
+
+                to_delete.append(obj_id)
+
+
+        for obj_id in to_delete:
+
+            del self.objects[obj_id]
