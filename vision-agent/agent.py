@@ -5,6 +5,7 @@ from detector import Detector
 from tracker import Tracker
 from state_engine import StateEngine
 from zone_engine import ZoneEngine
+from watchlist_engine import WatchlistEngine
 
 
 def main():
@@ -17,7 +18,7 @@ def main():
 
     frame_count = 0
 
-    # Read first frame to initialize zone engine properly
+    # Read first frame to initialize zone and watchlist engines
     ret, frame = camera.read()
 
     if not ret:
@@ -27,6 +28,7 @@ def main():
     frame_height, frame_width, _ = frame.shape
 
     zone_engine = ZoneEngine(frame_width, frame_height)
+    watchlist_engine = WatchlistEngine()
 
     while True:
 
@@ -40,30 +42,36 @@ def main():
         # Run detection every 6th frame (performance optimization)
         if frame_count % 6 == 0:
 
-            # Detect objects
+            # Step 1: Detect objects
             detections = detector.detect(frame)
 
-            # Update tracker (persistent IDs)
+            # Step 2: Update tracker (persistent identity)
             tracker.update(detections)
 
-            # Behavioral intelligence
+            # Step 3: Behavioral intelligence (entry, exit, loitering)
             state_events = state_engine.update(tracker.objects)
 
             for event in state_events:
                 print(event)
 
-            # Restricted zone intelligence
+            # Step 4: Restricted zone intelligence
             zone_events = zone_engine.update(tracker.objects)
 
             for event in zone_events:
                 print(event)
 
+            # Step 5: Watchlist intelligence
+            watchlist_events = watchlist_engine.update(tracker.objects)
 
-        # Draw restricted zone
+            for event in watchlist_events:
+                print(event)
+
+
+        # Draw restricted zone overlay
         zone_engine.draw_zone(frame)
 
 
-        # Draw tracked objects
+        # Draw tracked objects with IDs
         for obj_id, data in tracker.objects.items():
 
             x1, y1, x2, y2 = map(int, data["bbox"])
@@ -90,16 +98,16 @@ def main():
             )
 
 
-        # Show Anton intelligence view
+        # Show Anton intelligence system output
         cv2.imshow("ANTON - Recon Intelligence System", frame)
 
 
-        # Exit key
+        # Exit on Q key
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
 
-    # Cleanup
+    # Cleanup resources
     camera.release()
 
 
