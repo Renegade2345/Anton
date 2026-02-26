@@ -6,6 +6,7 @@ from tracker import Tracker
 from state_engine import StateEngine
 from zone_engine import ZoneEngine
 from watchlist_engine import WatchlistEngine
+from event_engine import EventEngine
 
 
 def main():
@@ -18,7 +19,7 @@ def main():
 
     frame_count = 0
 
-    # Read first frame to initialize zone and watchlist engines
+    # Read first frame to initialize engines that need dimensions
     ret, frame = camera.read()
 
     if not ret:
@@ -29,6 +30,7 @@ def main():
 
     zone_engine = ZoneEngine(frame_width, frame_height)
     watchlist_engine = WatchlistEngine()
+    event_engine = EventEngine()
 
     while True:
 
@@ -39,39 +41,39 @@ def main():
 
         frame_count += 1
 
-        # Run detection every 6th frame (performance optimization)
+        # Run detection every 6th frame for performance optimization
         if frame_count % 6 == 0:
 
-            # Step 1: Detect objects
+            # Step 1 — Detect objects
             detections = detector.detect(frame)
 
-            # Step 2: Update tracker (persistent identity)
+            # Step 2 — Update tracker
             tracker.update(detections)
 
-            # Step 3: Behavioral intelligence (entry, exit, loitering)
+            # Step 3 — Behavioral intelligence
             state_events = state_engine.update(tracker.objects)
 
-            for event in state_events:
-                print(event)
-
-            # Step 4: Restricted zone intelligence
+            # Step 4 — Zone intelligence
             zone_events = zone_engine.update(tracker.objects)
 
-            for event in zone_events:
-                print(event)
-
-            # Step 5: Watchlist intelligence
+            # Step 5 — Watchlist intelligence
             watchlist_events = watchlist_engine.update(tracker.objects)
 
-            for event in watchlist_events:
-                print(event)
+            # Step 6 — Combine all events
+            all_events = []
+            all_events.extend(state_events)
+            all_events.extend(zone_events)
+            all_events.extend(watchlist_events)
+
+            # Step 7 — Process events (alerts + logging)
+            event_engine.process_events(all_events)
 
 
         # Draw restricted zone overlay
         zone_engine.draw_zone(frame)
 
 
-        # Draw tracked objects with IDs
+        # Draw tracked objects with persistent IDs
         for obj_id, data in tracker.objects.items():
 
             x1, y1, x2, y2 = map(int, data["bbox"])
@@ -79,6 +81,7 @@ def main():
 
             display_text = f"{label} [{obj_id}]"
 
+            # Draw bounding box
             cv2.rectangle(
                 frame,
                 (x1, y1),
@@ -87,6 +90,7 @@ def main():
                 2
             )
 
+            # Draw label text
             cv2.putText(
                 frame,
                 display_text,
@@ -98,17 +102,18 @@ def main():
             )
 
 
-        # Show Anton intelligence system output
+        # Show Anton interface
         cv2.imshow("ANTON - Recon Intelligence System", frame)
 
 
-        # Exit on Q key
+        # Exit on pressing 'q'
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
 
     # Cleanup resources
     camera.release()
+    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
