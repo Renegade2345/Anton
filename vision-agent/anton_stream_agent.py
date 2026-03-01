@@ -3,16 +3,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Vision Agents (0.3.8 structure)
-from vision_agents.core import Agent
-from vision_agents.core import edge
-from vision_agents.core.processors.base_processor import Processor
-from vision_agents.core.llm.realtime import Realtime as OpenAIRealtime
+from vision_agents import Agent
+from vision_agents import getstream
+from vision_agents.processors import Processor
+from vision_agents.plugins import openai
 
-# Vision model
 from ultralytics import YOLO
 
-# Your intelligence modules
 from state_engine import StateEngine
 from zone_engine import ZoneEngine
 from watchlist_engine import WatchlistEngine
@@ -35,7 +32,7 @@ class AntonProcessor(Processor):
 
         self.frame_count = 0
 
-    async def on_video_frame(self, frame):
+    async def on_video(self, frame):
 
         self.frame_count += 1
 
@@ -43,7 +40,6 @@ class AntonProcessor(Processor):
             h, w, _ = frame.shape
             self.zone_engine = ZoneEngine(w, h)
 
-        # Frame skipping
         if self.frame_count % 6 != 0:
             return
 
@@ -64,7 +60,6 @@ class AntonProcessor(Processor):
 
         objects = {str(i): d for i, d in enumerate(detections)}
 
-        # Intelligence layers
         state_events = self.state_engine.update(objects)
         zone_events = self.zone_engine.update(objects)
         watchlist_events = self.watchlist_engine.update(objects)
@@ -89,13 +84,13 @@ class AntonProcessor(Processor):
 def main():
 
     agent = Agent(
-        edge=edge.Edge(
+        edge=getstream.Edge(
             api_key=os.getenv("STREAM_API_KEY"),
             api_secret=os.getenv("STREAM_API_SECRET")
         ),
         instructions="You are ANTON, a military-grade reconnaissance AI.",
         processors=[AntonProcessor()],
-        llm=OpenAIRealtime(fps=1)
+        llm=openai.Realtime(fps=1)
     )
 
     print("ANTON running on Vision Agents Runtime...")
