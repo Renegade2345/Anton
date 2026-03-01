@@ -1,11 +1,18 @@
-from vision_agents import Agent
-from vision_agents import getstream
-from vision_agents.plugins import openai
-from vision_agents.processors import Processor
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+
+# Vision Agents (0.3.8 structure)
+from vision_agents.core import Agent
+from vision_agents.core import edge
+from vision_agents.core.processors.base_processor import Processor
+from vision_agents.core.llm.realtime import Realtime as OpenAIRealtime
+
+# Vision model
 from ultralytics import YOLO
 
-# Your existing intelligence modules
+# Your intelligence modules
 from state_engine import StateEngine
 from zone_engine import ZoneEngine
 from watchlist_engine import WatchlistEngine
@@ -18,10 +25,8 @@ class AntonProcessor(Processor):
     def __init__(self):
         super().__init__()
 
-        # Vision Model
         self.model = YOLO("yolov8n.pt")
 
-        # Intelligence Engines
         self.state_engine = StateEngine()
         self.zone_engine = None
         self.watchlist_engine = WatchlistEngine()
@@ -30,17 +35,15 @@ class AntonProcessor(Processor):
 
         self.frame_count = 0
 
-
     async def on_video_frame(self, frame):
 
         self.frame_count += 1
 
-        # Initialize zone engine once
         if self.zone_engine is None:
             h, w, _ = frame.shape
             self.zone_engine = ZoneEngine(w, h)
 
-        # Frame skipping for performance
+        # Frame skipping
         if self.frame_count % 6 != 0:
             return
 
@@ -59,32 +62,24 @@ class AntonProcessor(Processor):
                 "label": label
             })
 
-        # Convert detections to object format
-        objects = {
-            str(i): d for i, d in enumerate(detections)
-        }
+        objects = {str(i): d for i, d in enumerate(detections)}
 
-        # Run Intelligence Layers
+        # Intelligence layers
         state_events = self.state_engine.update(objects)
         zone_events = self.zone_engine.update(objects)
         watchlist_events = self.watchlist_engine.update(objects)
 
         all_events = state_events + zone_events + watchlist_events
 
-        # Process events (logging)
         self.event_engine.process_events(all_events)
 
-        # Threat scoring
         threat_levels = self.threat_engine.update(objects, all_events)
 
-        # Return text to Vision Agents LLM
         if all_events:
-
-            summary = []
-            for event in all_events:
-                label = event.get("label", "object")
-                ev = event.get("event", "activity")
-                summary.append(f"{label} triggered {ev}")
+            summary = [
+                f"{e.get('label')} triggered {e.get('event')}"
+                for e in all_events
+            ]
 
             return {
                 "text": f"Recon intelligence events detected: {summary}"
@@ -94,10 +89,13 @@ class AntonProcessor(Processor):
 def main():
 
     agent = Agent(
-        edge=getstream.Edge(),  # Low-latency streaming
+        edge=edge.Edge(
+            api_key=os.getenv("STREAM_API_KEY"),
+            api_secret=os.getenv("STREAM_API_SECRET")
+        ),
         instructions="You are ANTON, a military-grade reconnaissance AI.",
         processors=[AntonProcessor()],
-        llm=openai.Realtime(fps=1)  # Native Vision Agents LLM plugin
+        llm=OpenAIRealtime(fps=1)
     )
 
     print("ANTON running on Vision Agents Runtime...")
