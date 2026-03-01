@@ -3,13 +3,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from vision_agents import Agent
-from vision_agents import getstream
-from vision_agents.processors import Processor
-from vision_agents.plugins import openai
+from vision_agents.core import Agent, AgentLauncher
+from vision_agents.core.processors.base_processor import Processor
+from vision_agents.core.llm.realtime import Realtime
 
 from ultralytics import YOLO
 
+# Your intelligence modules
 from state_engine import StateEngine
 from zone_engine import ZoneEngine
 from watchlist_engine import WatchlistEngine
@@ -40,6 +40,7 @@ class AntonProcessor(Processor):
             h, w, _ = frame.shape
             self.zone_engine = ZoneEngine(w, h)
 
+        # Frame skipping for performance
         if self.frame_count % 6 != 0:
             return
 
@@ -60,6 +61,7 @@ class AntonProcessor(Processor):
 
         objects = {str(i): d for i, d in enumerate(detections)}
 
+        # Intelligence layers
         state_events = self.state_engine.update(objects)
         zone_events = self.zone_engine.update(objects)
         watchlist_events = self.watchlist_engine.update(objects)
@@ -81,22 +83,15 @@ class AntonProcessor(Processor):
             }
 
 
-def main():
-
-    agent = Agent(
-        edge=getstream.Edge(
-            api_key=os.getenv("STREAM_API_KEY"),
-            api_secret=os.getenv("STREAM_API_SECRET")
-        ),
-        instructions="You are ANTON, a military-grade reconnaissance AI.",
-        processors=[AntonProcessor()],
-        llm=openai.Realtime(fps=1)
-    )
-
-    print("ANTON running on Vision Agents Runtime...")
-
-    agent.run()
+# Create the agent
+agent = Agent(
+    instructions="You are ANTON, a military-grade reconnaissance AI.",
+    processors=[AntonProcessor()],
+    llm=Realtime(fps=1)
+)
 
 
 if __name__ == "__main__":
-    main()
+    print("Launching ANTON via Vision Agents runtime...")
+    launcher = AgentLauncher(agent)
+    launcher.run()
