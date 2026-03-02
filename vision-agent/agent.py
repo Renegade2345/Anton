@@ -1,172 +1,105 @@
 import cv2
+from ultralytics import YOLO
 
-from camera import Camera
-from detector import Detector
-from tracker import Tracker
 from state_engine import StateEngine
 from zone_engine import ZoneEngine
 from watchlist_engine import WatchlistEngine
-from event_engine import EventEngine
 from threat_engine import ThreatEngine
-from llm_engine import LLMEngine
+from event_engine import EventEngine
 
 
-def main():
+class AntonEngine:
 
-    # -----------------------------
-    # Initialize Core Components
-    # -----------------------------
-    camera = Camera()
-    detector = Detector()
-    tracker = Tracker()
+    def __init__(self):
 
-    state_engine = StateEngine()
-    watchlist_engine = WatchlistEngine()
-    event_engine = EventEngine()
-    threat_engine = ThreatEngine()
-    llm_engine = LLMEngine()
+        self.model = YOLO("yolov8n.pt")
 
-    frame_count = 0
-    threat_levels = {}
+        self.state_engine = StateEngine()
+        self.zone_engine = None
+        self.watchlist_engine = WatchlistEngine()
+        self.threat_engine = ThreatEngine()
+        self.event_engine = EventEngine()
 
-    # Read first frame to initialize zone engine
-    ret, frame = camera.read()
+        self.frame_count = 0
 
-    if not ret:
-        print("Camera initialization failed.")
-        return
+    def process_frame(self, frame):
 
-    frame_height, frame_width, _ = frame.shape
-    zone_engine = ZoneEngine(frame_width, frame_height)
+        self.frame_count += 1
+        events_output = []
 
-    print("\nANTON Recon Intelligence System Started\n")
+        if self.zone_engine is None:
+            h, w, _ = frame.shape
+            self.zone_engine = ZoneEngine(w, h)
 
-    # -----------------------------
-    # Main Loop
-    # -----------------------------
-    while True:
+        # Frame skipping for performance
+        if self.frame_count % 6 != 0:
+            return frame, self.threat_engine.current_threat, events_output
 
-        ret, frame = camera.read()
+        results = self.model(frame)[0]
 
-        if not ret:
-            break
+        detections = []
 
-        frame_count += 1
+        for box in results.boxes:
+            cls = int(box.cls[0])
+            label = self.model.names[cls]
 
-        all_events = []
+            x1, y1, x2, y2 = box.xyxy[0]
 
-        # -----------------------------
-        # Detection + Intelligence (every 6 frames)
-        # -----------------------------
-        if frame_count % 6 == 0:
+            detections.append({
+                "bbox": [float(x1), float(y1), float(x2), float(y2)],
+                "label": label
+            })
 
-            # Detection
-            detections = detector.detect(frame)
-
-            # Tracking
-            tracker.update(detections)
-
-            # Intelligence engines
-            state_events = state_engine.update(tracker.objects)
-            zone_events = zone_engine.update(tracker.objects)
-            watchlist_events = watchlist_engine.update(tracker.objects)
-
-            # Combine events
-            all_events.extend(state_events)
-            all_events.extend(zone_events)
-            all_events.extend(watchlist_events)
-
-            # Process alerts
-            event_engine.process_events(all_events)
-
-            # Threat scoring
-            threat_levels = threat_engine.update(
-                tracker.objects,
-                all_events
-            )
-
-            # -----------------------------
-            # LLM Intelligence (Cooldown)
-            # Runs every 120 frames (~4 sec)
-            # -----------------------------
-            if all_events and frame_count % 120 == 0:
-
-                analysis = llm_engine.analyze(
-                    tracker.objects,
-                    all_events,
-                    threat_levels
-                )
-
-                if analysis:
-                    print("\n[ANTON INTELLIGENCE REPORT]")
-                    print(analysis)
-                    print()
-
-
-        # -----------------------------
-        # Draw Restricted Zone
-        # -----------------------------
-        zone_engine.draw_zone(frame)
-
-
-        # -----------------------------
-        # Draw Tracked Objects
-        # -----------------------------
-        for obj_id, data in tracker.objects.items():
-
-            x1, y1, x2, y2 = map(int, data["bbox"])
-            label = data["label"]
-            threat = threat_levels.get(obj_id, "LOW")
-
-            display_text = f"{label} [{obj_id}] ({threat})"
-
-            # Threat Color Coding
-            if threat == "LOW":
-                color = (0, 255, 0)
-            elif threat == "MEDIUM":
-                color = (0, 255, 255)
-            elif threat == "HIGH":
-                color = (0, 165, 255)
-            else:
-                color = (0, 0, 255)
-
+            # Draw box
             cv2.rectangle(
                 frame,
-                (x1, y1),
-                (x2, y2),
-                color,
+                (int(x1), int(y1)),
+                (int(x2), int(y2)),
+                (0, 255, 0),
                 2
             )
 
             cv2.putText(
                 frame,
-                display_text,
-                (x1, y1 - 10),
+                label,
+                (int(x1), int(y1) - 10),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.5,
-                color,
+                (0, 255, 0),
                 2
             )
 
+        objects = {str(i): d for i, d in enumerate(detections)}
 
-        # -----------------------------
-        # Display
-        # -----------------------------
-        cv2.imshow(
-            "ANTON - Recon Intelligence System",
-            frame
+        state_events = self.state_engine.update(objects)
+        zone_events = self.zone_engine.update(objects)
+        watchlist_events = self.watchlist_engine.update(objects)
+
+        all_events = state_events + zone_events + watchlist_events
+
+        self.event_engine.process_events(all_events)
+        threat_level = self.threat_engine.update(objects, all_events)
+
+        for e in all_events:
+            events_output.append(f"{e.get('label')} → {e.get('event')}")
+
+        # Draw threat level on frame
+        cv2.putText(
+            frame,
+            f"Threat: {threat_level:.2f}",
+            (20, 40),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (0, 0, 255),
+            3
         )
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+        return frame, threat_level, events_output
 
 
-    # -----------------------------
-    # Cleanup
-    # -----------------------------
-    camera.release()
-    cv2.destroyAllWindows()
+# Global engine instance for dashboard usage
+anton_engine = AntonEngine()
 
 
-if __name__ == "__main__":
-    main()
+def run_anton_frame(frame):
+    return anton_engine.process_frame(frame)
