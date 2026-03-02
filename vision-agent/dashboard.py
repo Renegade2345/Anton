@@ -3,15 +3,11 @@ import cv2
 import time
 from agent import run_anton_frame
 
-# ----------------------------
-# PAGE CONFIG
-# ----------------------------
+
 
 st.set_page_config(layout="wide")
 
-# ----------------------------
-# TACTICAL THEME (Zero Compute Cost)
-# ----------------------------
+
 
 st.markdown("""
 <style>
@@ -30,10 +26,6 @@ body {
 </style>
 """, unsafe_allow_html=True)
 
-# ----------------------------
-# TITLE
-# ----------------------------
-
 st.title("🛰 ANTON Tactical Recon Interface")
 
 col1, col2, col3 = st.columns([1, 2, 1])
@@ -41,24 +33,21 @@ col1, col2, col3 = st.columns([1, 2, 1])
 threat_placeholder = col1.empty()
 status_placeholder = col1.empty()
 progress_placeholder = col1.empty()
+trend_placeholder = col1.empty()
 
 video_placeholder = col2.empty()
 
 event_placeholder = col3.empty()
 analysis_placeholder = col3.empty()
 
-# ----------------------------
-# INIT STATE
-# ----------------------------
+
 
 threat_level = 0.0
 events = []
+threat_history = []
 
 cap = cv2.VideoCapture(0)
 
-# ----------------------------
-# MAIN LOOP
-# ----------------------------
 
 while True:
     ret, frame = cap.read()
@@ -68,13 +57,15 @@ while True:
 
     processed_frame, threat_level, new_events = run_anton_frame(frame)
 
-    # Maintain last 15 events only (lightweight memory control)
+    # Maintain last 15 events
     events.extend(new_events)
     events = events[-15:]
 
-    # ----------------------------
-    # LEFT PANEL — THREAT STATUS
-    # ----------------------------
+    # Maintain last 50 threat values
+    threat_history.append(threat_level)
+    threat_history = threat_history[-50:]
+
+
 
     threat_placeholder.metric("Threat Level", f"{threat_level:.2f}")
 
@@ -87,15 +78,13 @@ while True:
 
     progress_placeholder.progress(threat_level)
 
-    # ----------------------------
-    # CENTER PANEL — VIDEO
-    # ----------------------------
+    trend_placeholder.markdown("### Threat Trend")
+    trend_placeholder.line_chart(threat_history)
+
 
     video_placeholder.image(processed_frame, channels="BGR")
 
-    # ----------------------------
-    # RIGHT PANEL — EVENT LOG
-    # ----------------------------
+
 
     event_placeholder.markdown("### Recent Events")
 
@@ -119,9 +108,7 @@ while True:
                 unsafe_allow_html=True
             )
 
-    # ----------------------------
-    # THREAT ANALYSIS PANEL
-    # ----------------------------
+
 
     analysis_placeholder.markdown("### Threat Analysis")
 
@@ -131,9 +118,5 @@ while True:
             analysis_placeholder.write(f"- {e}")
     else:
         analysis_placeholder.write("No active escalation drivers.")
-
-    # ----------------------------
-    # Frame pacing (keep UI smooth)
-    # ----------------------------
 
     time.sleep(0.03)
