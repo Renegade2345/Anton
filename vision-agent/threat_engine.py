@@ -1,61 +1,40 @@
 class ThreatEngine:
 
     def __init__(self):
+        self.current_threat = 0.0
+        self.decay_rate = 0.02 
+        self.max_threat = 1.0
 
-        self.threat_scores = {}
+    def update(self, objects, events):
 
+        threat_score = self.current_threat
 
-    def update(self, tracked_objects, events):
+        # Base object presence adds small threat
+        threat_score += 0.01 * len(objects)
 
-        threat_levels = {}
-
-        # Reset scores
-        for obj_id in tracked_objects:
-
-            if obj_id not in self.threat_scores:
-                self.threat_scores[obj_id] = 0
-
-            label = tracked_objects[obj_id]["label"]
-
-            if label == "person":
-                self.threat_scores[obj_id] += 10
-
-            elif label in ["car", "truck"]:
-                self.threat_scores[obj_id] += 15
-
-
-        # Add event-based scoring
         for event in events:
 
-            obj_id = event.get("id")
+            event_type = event.get("event", "")
+            label = event.get("label", "")
 
-            if obj_id is None:
-                continue
+            # Zone breach = moderate escalation
+            if "ZONE" in event_type:
+                threat_score += 0.2
 
-            if event["event"] == "WATCHLIST_MATCH":
-                self.threat_scores[obj_id] += 50
+            # Watchlist match = heavy escalation
+            if "WATCHLIST" in event_type:
+                threat_score += 0.5
 
-            elif event["event"] == "RESTRICTED_ZONE_ENTERED":
-                self.threat_scores[obj_id] += 40
+            # Suspicious state detection
+            if "SUSPICIOUS" in event_type:
+                threat_score += 0.3
 
-            elif event["event"] == "LOITERING_DETECTED":
-                self.threat_scores[obj_id] += 30
+        # Apply decay so threat slowly drops
+        threat_score -= self.decay_rate
 
+        # Clamp between 0 and max
+        threat_score = max(0.0, min(self.max_threat, threat_score))
 
-        # Convert score → threat level
-        for obj_id, score in self.threat_scores.items():
+        self.current_threat = threat_score
 
-            if score >= 70:
-                threat_levels[obj_id] = "CRITICAL"
-
-            elif score >= 40:
-                threat_levels[obj_id] = "HIGH"
-
-            elif score >= 20:
-                threat_levels[obj_id] = "MEDIUM"
-
-            else:
-                threat_levels[obj_id] = "LOW"
-
-
-        return threat_levels
+        return self.current_threat
