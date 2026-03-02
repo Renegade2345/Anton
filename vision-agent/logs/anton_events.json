@@ -140,3 +140,44 @@
 {"event": "OBJECT_EXITED", "id": "2", "label": "person", "duration": 2.38, "timestamp": 1772450117.9186356}
 {"event": "OBJECT_EXITED", "id": "0", "label": "cat", "duration": 46.52, "timestamp": 1772450120.5568624}
 {"event": "OBJECT_EXITED", "id": "1", "label": "bottle", "duration": 5.87, "timestamp": 1772450120.5568624}
+{"event": "OBJECT_ENTERED", "id": "0", "label": "bird", "timestamp": 1772451453.3743362}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "kite", "timestamp": 1772451453.3766174}
+{"event": "OBJECT_EXITED", "id": "0", "label": "bird", "duration": 2.23, "timestamp": 1772451455.6021168}
+{"event": "OBJECT_EXITED", "id": "1", "label": "kite", "duration": 2.23, "timestamp": 1772451455.603106}
+{"event": "OBJECT_ENTERED", "id": "2", "label": "laptop", "timestamp": 1772451457.5707574}
+{"event": "OBJECT_ENTERED", "id": "3", "label": "person", "timestamp": 1772451457.5717585}
+{"event": "OBJECT_ENTERED", "id": "4", "label": "laptop", "timestamp": 1772451457.5717585}
+{"event": "OBJECT_ENTERED", "id": "5", "label": "person", "timestamp": 1772451457.573221}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "4", "label": "laptop", "timestamp": 1772451457.5742214}
+{"event": "WATCHLIST_MATCH", "id": "3", "label": "person", "timestamp": 1772451457.5742214}
+{"event": "WATCHLIST_MATCH", "id": "5", "label": "person", "timestamp": 1772451457.57637}
+{"event": "WATCHLIST_MATCH", "id": "4", "label": "person", "timestamp": 1772451458.4108143}
+{"event": "OBJECT_ENTERED", "id": "6", "label": "person", "timestamp": 1772451458.9478605}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "5", "label": "car", "timestamp": 1772451458.9498625}
+{"event": "WATCHLIST_MATCH", "id": "6", "label": "person", "timestamp": 1772451458.9498625}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "3", "label": "car", "timestamp": 1772451460.8471541}
+{"event": "OBJECT_EXITED", "id": "6", "label": "person", "duration": 2.41, "timestamp": 1772451461.3609817}
+{"event": "OBJECT_EXITED", "id": "4", "label": "laptop", "duration": 5.68, "timestamp": 1772451463.2500598}
+{"event": "OBJECT_EXITED", "id": "5", "label": "person", "duration": 5.68, "timestamp": 1772451463.2510598}
+{"event": "OBJECT_EXITED", "id": "0", "label": "toothbrush", "duration": 10.67, "timestamp": 1772451467.2178872}
+{"event": "OBJECT_EXITED", "id": "1", "label": "laptop", "duration": 9.65, "timestamp": 1772451467.2188866}
+{"event": "OBJECT_EXITED", "id": "2", "label": "laptop", "duration": 9.65, "timestamp": 1772451467.2198887}
+{"event": "OBJECT_EXITED", "id": "3", "label": "person", "duration": 9.65, "timestamp": 1772451467.2278867}
+{"event": "OBJECT_ENTERED", "id": "0", "label": "person", "timestamp": 1772468343.5438592}
+{"event": "WATCHLIST_MATCH", "id": "0", "label": "person", "timestamp": 1772468343.5463743}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "dog", "timestamp": 1772468344.0526955}
+{"event": "WATCHLIST_MATCH", "id": "1", "label": "person", "timestamp": 1772468344.6211896}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "0", "label": "person", "timestamp": 1772468347.6290958}
+{"event": "OBJECT_ENTERED", "id": "2", "label": "person", "timestamp": 1772468348.3016167}
+{"event": "OBJECT_ENTERED", "id": "3", "label": "laptop", "timestamp": 1772468348.3026197}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "1", "label": "person", "timestamp": 1772468348.3038936}
+{"event": "WATCHLIST_MATCH", "id": "2", "label": "person", "timestamp": 1772468348.3050985}
+{"event": "OBJECT_ENTERED", "id": "4", "label": "person", "timestamp": 1772468348.962098}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "3", "label": "person", "timestamp": 1772468348.9641032}
+{"event": "WATCHLIST_MATCH", "id": "3", "label": "person", "timestamp": 1772468348.966101}
+{"event": "WATCHLIST_MATCH", "id": "4", "label": "person", "timestamp": 1772468348.9682426}
+{"event": "OBJECT_EXITED", "id": "4", "label": "person", "duration": 2.61, "timestamp": 1772468351.5711846}
+{"event": "OBJECT_EXITED", "id": "2", "label": "person", "duration": 3.87, "timestamp": 1772468352.170447}
+{"event": "OBJECT_EXITED", "id": "3", "label": "laptop", "duration": 3.87, "timestamp": 1772468352.1724513}
+{"event": "OBJECT_EXITED", "id": "1", "label": "dog", "duration": 8.88, "timestamp": 1772468352.936524}
+{"event": "OBJECT_EXITED", "id": "0", "label": "person", "duration": 12.04, "timestamp": 1772468355.5865266}
