@@ -57,6 +57,3 @@ Purpose
 ANTON demonstrates how real-time video feeds can be transformed into structured, explainable threat intelligence using modular AI systems.
 
 
-Or a GitHub-polished version with badges and visuals
-
-Your call.
