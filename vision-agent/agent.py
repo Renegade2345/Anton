@@ -35,7 +35,7 @@ class AntonEngine:
         if self.frame_count % 6 != 0:
             return frame, self.threat_engine.current_threat, events_output
 
-        results = self.model(frame)[0]
+        results = self.model(frame, verbose = False)[0]
 
         detections = []
 

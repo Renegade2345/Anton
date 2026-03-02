@@ -8,3 +8,135 @@
 {"event": "OBJECT_ENTERED", "id": "09824711", "label": "person", "timestamp": 1772131881.8253393}
 {"event": "RESTRICTED_ZONE_ENTERED", "id": "09824711", "label": "person", "timestamp": 1772131881.8273392}
 {"event": "WATCHLIST_MATCH", "id": "09824711", "label": "person", "timestamp": 1772131881.8293388}
+{"event": "OBJECT_ENTERED", "id": "0", "label": "cell phone", "timestamp": 1772449464.475456}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "chair", "timestamp": 1772449464.4774587}
+{"event": "OBJECT_EXITED", "id": "0", "label": "cell phone", "duration": 2.15, "timestamp": 1772449466.6222105}
+{"event": "OBJECT_EXITED", "id": "1", "label": "chair", "duration": 2.15, "timestamp": 1772449466.6232705}
+{"event": "OBJECT_ENTERED", "id": "2", "label": "person", "timestamp": 1772449469.47385}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "1", "label": "laptop", "timestamp": 1772449469.4758508}
+{"event": "WATCHLIST_MATCH", "id": "0", "label": "person", "timestamp": 1772449469.4768484}
+{"event": "WATCHLIST_MATCH", "id": "2", "label": "person", "timestamp": 1772449469.4788492}
+{"event": "WATCHLIST_MATCH", "id": "1", "label": "person", "timestamp": 1772449470.491161}
+{"event": "OBJECT_ENTERED", "id": "3", "label": "person", "timestamp": 1772449471.039357}
+{"event": "OBJECT_ENTERED", "id": "4", "label": "person", "timestamp": 1772449471.0403569}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "2", "label": "book", "timestamp": 1772449471.0413578}
+{"event": "WATCHLIST_MATCH", "id": "3", "label": "person", "timestamp": 1772449471.0413578}
+{"event": "WATCHLIST_MATCH", "id": "4", "label": "person", "timestamp": 1772449471.042756}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "3", "label": "book", "timestamp": 1772449471.5223212}
+{"event": "OBJECT_EXITED", "id": "4", "label": "person", "duration": 2.66, "timestamp": 1772449473.701954}
+{"event": "OBJECT_EXITED", "id": "3", "label": "person", "duration": 3.2, "timestamp": 1772449474.237342}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "0", "label": "cat", "timestamp": 1772449474.2383442}
+{"event": "OBJECT_EXITED", "id": "1", "label": "laptop", "duration": 10.64, "timestamp": 1772449480.1171908}
+{"event": "OBJECT_EXITED", "id": "2", "label": "person", "duration": 10.64, "timestamp": 1772449480.1184692}
+{"event": "OBJECT_EXITED", "id": "3", "label": "laptop", "duration": 5.4, "timestamp": 1772449480.1184692}
+{"event": "OBJECT_EXITED", "id": "4", "label": "person", "duration": 4.29, "timestamp": 1772449480.1199691}
+{"event": "LOITERING_DETECTED", "id": "0", "label": "person", "duration": 12.09, "timestamp": 1772449481.130697}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "tie", "timestamp": 1772449481.131698}
+{"event": "OBJECT_ENTERED", "id": "2", "label": "person", "timestamp": 1772449483.3275726}
+{"event": "OBJECT_ENTERED", "id": "3", "label": "person", "timestamp": 1772449483.328586}
+{"event": "OBJECT_ENTERED", "id": "4", "label": "person", "timestamp": 1772449483.3295846}
+{"event": "OBJECT_EXITED", "id": "2", "label": "person", "duration": 2.2, "timestamp": 1772449485.5278099}
+{"event": "OBJECT_EXITED", "id": "3", "label": "person", "duration": 2.2, "timestamp": 1772449485.5288112}
+{"event": "OBJECT_EXITED", "id": "4", "label": "person", "duration": 2.2, "timestamp": 1772449485.529811}
+{"event": "OBJECT_EXITED", "id": "1", "label": "tie", "duration": 7.44, "timestamp": 1772449488.569818}
+{"event": "OBJECT_EXITED", "id": "0", "label": "bottle", "duration": 22.26, "timestamp": 1772449491.3046875}
+{"event": "OBJECT_ENTERED", "id": "0", "label": "tv", "timestamp": 1772449496.1040554}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "tv", "timestamp": 1772449496.1053421}
+{"event": "OBJECT_ENTERED", "id": "2", "label": "laptop", "timestamp": 1772449497.697828}
+{"event": "OBJECT_EXITED", "id": "2", "label": "laptop", "duration": 2.12, "timestamp": 1772449499.822482}
+{"event": "OBJECT_ENTERED", "id": "3", "label": "bottle", "timestamp": 1772449503.6140935}
+{"event": "OBJECT_ENTERED", "id": "4", "label": "person", "timestamp": 1772449503.6145968}
+{"event": "OBJECT_EXITED", "id": "4", "label": "person", "duration": 2.18, "timestamp": 1772449505.7926192}
+{"event": "LOITERING_DETECTED", "id": "0", "label": "vase", "duration": 10.15, "timestamp": 1772449506.2506392}
+{"event": "LOITERING_DETECTED", "id": "1", "label": "person", "duration": 10.15, "timestamp": 1772449506.2516384}
+{"event": "OBJECT_EXITED", "id": "2", "label": "laptop", "duration": 7.24, "timestamp": 1772449507.5493703}
+{"event": "OBJECT_EXITED", "id": "3", "label": "bottle", "duration": 3.94, "timestamp": 1772449507.5513718}
+{"event": "OBJECT_ENTERED", "id": "2", "label": "person", "timestamp": 1772449510.1406412}
+{"event": "OBJECT_ENTERED", "id": "3", "label": "person", "timestamp": 1772449510.1406412}
+{"event": "OBJECT_ENTERED", "id": "4", "label": "person", "timestamp": 1772449510.1417975}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "4", "label": "person", "timestamp": 1772449510.1427987}
+{"event": "OBJECT_ENTERED", "id": "5", "label": "car", "timestamp": 1772449511.8898594}
+{"event": "WATCHLIST_MATCH", "id": "5", "label": "car", "timestamp": 1772449511.8912404}
+{"event": "OBJECT_EXITED", "id": "5", "label": "car", "duration": 2.1, "timestamp": 1772449513.9924848}
+{"event": "OBJECT_EXITED", "id": "4", "label": "person", "duration": 4.3, "timestamp": 1772449514.4389868}
+{"event": "OBJECT_ENTERED", "id": "4", "label": "person", "timestamp": 1772449515.3539324}
+{"event": "LOITERING_DETECTED", "id": "2", "label": "person", "duration": 10.06, "timestamp": 1772449520.196595}
+{"event": "OBJECT_EXITED", "id": "3", "label": "person", "duration": 10.51, "timestamp": 1772449520.65057}
+{"event": "OBJECT_ENTERED", "id": "3", "label": "person", "timestamp": 1772449521.090446}
+{"event": "OBJECT_EXITED", "id": "2", "label": "person", "duration": 15.72, "timestamp": 1772449525.8620434}
+{"event": "OBJECT_ENTERED", "id": "2", "label": "person", "timestamp": 1772449526.3024569}
+{"event": "OBJECT_ENTERED", "id": "3", "label": "tv", "timestamp": 1772449526.303552}
+{"event": "OBJECT_ENTERED", "id": "4", "label": "person", "timestamp": 1772449526.303552}
+{"event": "OBJECT_ENTERED", "id": "5", "label": "tv", "timestamp": 1772449526.3048704}
+{"event": "OBJECT_ENTERED", "id": "6", "label": "person", "timestamp": 1772449526.3048704}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "5", "label": "tv", "timestamp": 1772449526.3058684}
+{"event": "WATCHLIST_MATCH", "id": "6", "label": "person", "timestamp": 1772449526.3068686}
+{"event": "OBJECT_ENTERED", "id": "7", "label": "tv", "timestamp": 1772449527.1515975}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "6", "label": "oven", "timestamp": 1772449527.6159267}
+{"event": "WATCHLIST_MATCH", "id": "7", "label": "person", "timestamp": 1772449527.6169267}
+{"event": "OBJECT_EXITED", "id": "6", "label": "person", "duration": 3.44, "timestamp": 1772449529.7416804}
+{"event": "OBJECT_EXITED", "id": "7", "label": "tv", "duration": 2.59, "timestamp": 1772449529.7426805}
+{"event": "OBJECT_EXITED", "id": "5", "label": "tv", "duration": 3.92, "timestamp": 1772449530.2263052}
+{"event": "OBJECT_EXITED", "id": "4", "label": "person", "duration": 6.11, "timestamp": 1772449532.4090369}
+{"event": "LOITERING_DETECTED", "id": "2", "label": "person", "duration": 10.09, "timestamp": 1772449536.3894067}
+{"event": "LOITERING_DETECTED", "id": "3", "label": "tv", "duration": 10.09, "timestamp": 1772449536.3904688}
+{"event": "OBJECT_ENTERED", "id": "4", "label": "refrigerator", "timestamp": 1772449542.854889}
+{"event": "OBJECT_ENTERED", "id": "5", "label": "person", "timestamp": 1772449549.7552333}
+{"event": "OBJECT_EXITED", "id": "5", "label": "person", "duration": 2.39, "timestamp": 1772449552.1436307}
+{"event": "LOITERING_DETECTED", "id": "4", "label": "person", "duration": 10.3, "timestamp": 1772449553.1537867}
+{"event": "OBJECT_ENTERED", "id": "6", "label": "person", "timestamp": 1772449553.59781}
+{"event": "OBJECT_ENTERED", "id": "7", "label": "person", "timestamp": 1772449553.5991387}
+{"event": "OBJECT_EXITED", "id": "7", "label": "person", "duration": 2.37, "timestamp": 1772449555.9633512}
+{"event": "OBJECT_EXITED", "id": "6", "label": "person", "duration": 2.85, "timestamp": 1772449556.446521}
+{"event": "OBJECT_ENTERED", "id": "5", "label": "person", "timestamp": 1772449561.241385}
+{"event": "OBJECT_EXITED", "id": "5", "label": "person", "duration": 4.34, "timestamp": 1772449565.5792658}
+{"event": "OBJECT_ENTERED", "id": "5", "label": "tv", "timestamp": 1772449570.3821557}
+{"event": "OBJECT_EXITED", "id": "5", "label": "tv", "duration": 2.42, "timestamp": 1772449572.801064}
+{"event": "OBJECT_ENTERED", "id": "6", "label": "person", "timestamp": 1772449574.3152063}
+{"event": "OBJECT_ENTERED", "id": "7", "label": "person", "timestamp": 1772449574.7576778}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "7", "label": "person", "timestamp": 1772449574.7586777}
+{"event": "OBJECT_EXITED", "id": "7", "label": "person", "duration": 2.41, "timestamp": 1772449577.1654017}
+{"event": "OBJECT_EXITED", "id": "6", "label": "person", "duration": 6.91, "timestamp": 1772449581.2240095}
+{"event": "LOITERING_DETECTED", "id": "5", "label": "person", "duration": 10.96, "timestamp": 1772449584.2089202}
+{"event": "OBJECT_ENTERED", "id": "6", "label": "tv", "timestamp": 1772449584.2099204}
+{"event": "OBJECT_EXITED", "id": "6", "label": "tv", "duration": 2.39, "timestamp": 1772449586.6025088}
+{"event": "OBJECT_EXITED", "id": "5", "label": "person", "duration": 13.82, "timestamp": 1772449587.0685828}
+{"event": "OBJECT_ENTERED", "id": "5", "label": "tv", "timestamp": 1772449587.504159}
+{"event": "OBJECT_ENTERED", "id": "7", "label": "person", "timestamp": 1772449587.5051615}
+{"event": "OBJECT_EXITED", "id": "6", "label": "person", "duration": 4.35, "timestamp": 1772449591.8524685}
+{"event": "OBJECT_EXITED", "id": "7", "label": "person", "duration": 4.35, "timestamp": 1772449591.8534682}
+{"event": "OBJECT_ENTERED", "id": "6", "label": "person", "timestamp": 1772449592.2908251}
+{"event": "OBJECT_EXITED", "id": "5", "label": "refrigerator", "duration": 2.6, "timestamp": 1772449594.8873436}
+{"event": "OBJECT_ENTERED", "id": "5", "label": "person", "timestamp": 1772449595.4018705}
+{"event": "OBJECT_ENTERED", "id": "5", "label": "refrigerator", "timestamp": 1772449600.4319477}
+{"event": "OBJECT_EXITED", "id": "5", "label": "refrigerator", "duration": 2.97, "timestamp": 1772449603.4050741}
+{"event": "OBJECT_EXITED", "id": "4", "label": "refrigerator", "duration": 65.81, "timestamp": 1772449608.6625257}
+{"event": "OBJECT_EXITED", "id": "2", "label": "person", "duration": 83.75, "timestamp": 1772449610.0472786}
+{"event": "OBJECT_EXITED", "id": "3", "label": "tv", "duration": 83.75, "timestamp": 1772449610.048276}
+{"event": "OBJECT_EXITED", "id": "1", "label": "tv", "duration": 114.53, "timestamp": 1772449610.6388528}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "cat", "timestamp": 1772449612.6836085}
+{"event": "OBJECT_EXITED", "id": "1", "label": "cat", "duration": 5.12, "timestamp": 1772449617.8043182}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "toilet", "timestamp": 1772449618.2472928}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "cat", "timestamp": 1772449623.9410632}
+{"event": "OBJECT_EXITED", "id": "1", "label": "cat", "duration": 2.39, "timestamp": 1772449626.3340251}
+{"event": "OBJECT_ENTERED", "id": "0", "label": "cat", "timestamp": 1772450074.0343418}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "0", "label": "cat", "timestamp": 1772450074.0356283}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "person", "timestamp": 1772450075.4514685}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "1", "label": "person", "timestamp": 1772450075.4534733}
+{"event": "WATCHLIST_MATCH", "id": "0", "label": "person", "timestamp": 1772450075.454973}
+{"event": "WATCHLIST_MATCH", "id": "1", "label": "person", "timestamp": 1772450075.454973}
+{"event": "OBJECT_EXITED", "id": "1", "label": "person", "duration": 2.18, "timestamp": 1772450077.6307557}
+{"event": "LOITERING_DETECTED", "id": "0", "label": "person", "duration": 10.04, "timestamp": 1772450084.074605}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "cat", "timestamp": 1772450084.0756009}
+{"event": "LOITERING_DETECTED", "id": "1", "label": "cell phone", "duration": 11.67, "timestamp": 1772450095.74321}
+{"event": "OBJECT_EXITED", "id": "1", "label": "cat", "duration": 14.07, "timestamp": 1772450098.1414173}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "cell phone", "timestamp": 1772450099.1055796}
+{"event": "OBJECT_EXITED", "id": "1", "label": "cell phone", "duration": 8.0, "timestamp": 1772450107.109021}
+{"event": "OBJECT_ENTERED", "id": "1", "label": "cell phone", "timestamp": 1772450111.4720078}
+{"event": "OBJECT_EXITED", "id": "1", "label": "cell phone", "duration": 2.18, "timestamp": 1772450113.6566062}
+{"event": "OBJECT_ENTERED", "id": "2", "label": "person", "timestamp": 1772450115.5379453}
+{"event": "RESTRICTED_ZONE_ENTERED", "id": "2", "label": "person", "timestamp": 1772450115.5389476}
+{"event": "WATCHLIST_MATCH", "id": "2", "label": "person", "timestamp": 1772450115.539946}
+{"event": "OBJECT_EXITED", "id": "2", "label": "person", "duration": 2.38, "timestamp": 1772450117.9186356}
+{"event": "OBJECT_EXITED", "id": "0", "label": "cat", "duration": 46.52, "timestamp": 1772450120.5568624}
+{"event": "OBJECT_EXITED", "id": "1", "label": "bottle", "duration": 5.87, "timestamp": 1772450120.5568624}
