@@ -50,7 +50,7 @@ class AntonEngine:
                 "label": label
             })
 
-            # Draw box
+            # Draw bounding box
             cv2.rectangle(
                 frame,
                 (int(x1), int(y1)),
@@ -71,6 +71,7 @@ class AntonEngine:
 
         objects = {str(i): d for i, d in enumerate(detections)}
 
+        # Intelligence Layers
         state_events = self.state_engine.update(objects)
         zone_events = self.zone_engine.update(objects)
         watchlist_events = self.watchlist_engine.update(objects)
@@ -81,23 +82,32 @@ class AntonEngine:
         threat_level = self.threat_engine.update(objects, all_events)
 
         for e in all_events:
-            events_output.append(f"{e.get('label')} → {e.get('event')}")
+            label = e.get("label", "Unknown")
+            event_type = e.get("event", "UnknownEvent")
+            events_output.append(f"{label} → {event_type}")
 
-        # Draw threat level on frame
+        # Threat overlay color logic
+        if threat_level < 0.3:
+            color = (0, 255, 0)
+        elif threat_level < 0.7:
+            color = (0, 165, 255)
+        else:
+            color = (0, 0, 255)
+
         cv2.putText(
             frame,
-            f"Threat: {threat_level:.2f}",
+            f"Threat Level: {threat_level:.2f}",
             (20, 40),
             cv2.FONT_HERSHEY_SIMPLEX,
             1,
-            (0, 0, 255),
+            color,
             3
         )
 
         return frame, threat_level, events_output
 
 
-# Global engine instance for dashboard usage
+# Global engine instance
 anton_engine = AntonEngine()
 
 
